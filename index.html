@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registrasi Tamu</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  :root {
+    --hijau: #0f2a24;
+    --hijau-tua: #0a1d19;
+    --emas: #c6a96b;
+    --emas-terang: #e0c88f;
+    --gading: #f1ebdc;
+    --abu: #8fa39c;
+    --merah: #e07a6b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at 50% 0%, var(--hijau) 0%, var(--hijau-tua) 70%);
+    font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    color: var(--gading);
+  }
+  .kartu {
+    width: 100%;
+    max-width: 420px;
+    padding: 44px 36px 36px;
+    border: 1px solid var(--emas);
+    outline: 1px solid rgba(198, 169, 107, .35);
+    outline-offset: 6px;
+    background: rgba(255, 255, 255, .02);
+    text-align: center;
+  }
+  h1 {
+    margin: 0 0 10px;
+    font-size: 1.7rem;
+    font-weight: normal;
+    letter-spacing: .06em;
+    color: var(--emas-terang);
+  }
+  .garis {
+    width: 56px;
+    height: 1px;
+    margin: 0 auto 14px;
+    background: var(--emas);
+  }
+  .sub { margin: 0 0 30px; color: var(--abu); font-style: italic; font-size: .98rem; }
+  .baris { text-align: left; margin-bottom: 22px; }
+  label { display: block; margin-bottom: 4px; color: var(--emas); font-size: .95rem; letter-spacing: .04em; }
+  input {
+    width: 100%;
+    padding: 8px 2px;
+    border: none;
+    border-bottom: 1px solid var(--abu);
+    background: transparent;
+    font: inherit;
+    font-size: 1.1rem;
+    color: var(--gading);
+    border-radius: 0;
+    transition: border-color .2s;
+  }
+  input::placeholder { color: rgba(143, 163, 156, .6); }
+  input:focus { outline: none; border-bottom-color: var(--emas-terang); }
+  input.salah { border-bottom-color: var(--merah); }
+  .pesan { min-height: 22px; margin: -8px 0 14px; text-align: left; font-size: .9rem; color: var(--merah); }
+  .tombol { display: flex; gap: 14px; margin-top: 8px; }
+  button {
+    flex: 1;
+    padding: 12px;
+    font: inherit;
+    letter-spacing: .08em;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  button:focus-visible { outline: 2px solid var(--emas-terang); outline-offset: 3px; }
+  #btnProses { background: var(--emas); border: 1px solid var(--emas); color: var(--hijau-tua); }
+  #btnProses:hover { background: var(--emas-terang); }
+  #btnClear { background: transparent; border: 1px solid var(--emas); color: var(--emas-terang); }
+  #btnClear:hover { background: rgba(198, 169, 107, .15); }
+</style>
+</head>
+<body>
+
+<main class="kartu">
+  <h1>Registrasi Tamu</h1>
+  <div class="garis"></div>
+  <p class="sub">Tamu berusia 27 tahun ke atas dipersilakan masuk.</p>
+
+  <div class="baris">
+    <label for="nama">Nama</label>
+    <input type="text" id="nama" placeholder="Masukkan nama" autocomplete="off">
+  </div>
+
+  <div class="baris">
+    <label for="usia">Usia</label>
+    <input type="number" id="usia" placeholder="Masukkan usia" min="0" autocomplete="off">
+  </div>
+
+  <div class="pesan" id="pesan" role="alert"></div>
+
+  <div class="tombol">
+    <button type="button" id="btnProses">Proses</button>
+    <button type="button" id="btnClear">Clear</button>
+  </div>
+</main>
+
+<script>
+$(document).ready(function () {
+
+  // Tombol PROSES: validasi input, lalu tampilkan dialog alert
+  $("#btnProses").on("click", function () {
+    var nama = $.trim($("#nama").val());
+    var usiaTeks = $.trim($("#usia").val());
+    var usia = parseInt(usiaTeks, 10);
+
+    $("#nama, #usia").removeClass("salah");
+    $("#pesan").text("");
+
+    if (nama === "") {
+      $("#nama").addClass("salah").focus();
+      $("#pesan").text("Nama wajib diisi.");
+      return;
+    }
+    if (usiaTeks === "" || isNaN(usia) || usia < 0) {
+      $("#usia").addClass("salah").focus();
+      $("#pesan").text("Usia wajib diisi dengan angka yang valid.");
+      return;
+    }
+
+    if (usia >= 27) {
+      alert("Hello, " + nama + "\nAnda boleh masuk");
+    } else {
+      alert("Hello, " + nama + "\nAnda tidak boleh");
+    }
+  });
+
+  // Tombol CLEAR: kosongkan isi textfield nama dan usia
+  $("#btnClear").on("click", function () {
+    $("#nama, #usia").val("").removeClass("salah");
+    $("#pesan").text("");
+    $("#nama").focus();
+  });
+
+});
+</script>
+
+</body>
+</html>
